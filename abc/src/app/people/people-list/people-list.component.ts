@@ -13,6 +13,7 @@ import { PersonService } from '../person.service';
 export class PeopleListComponent implements OnInit {
   people: Person[] = [];
   subscription!: Subscription;
+  term!: string;
 
   constructor(private personService: PersonService) {}
 
@@ -23,5 +24,9 @@ export class PeopleListComponent implements OnInit {
         this.people = people;
       }
     );
+  }
+
+  search(value: string) {
+    this.term = value;
   }
 }

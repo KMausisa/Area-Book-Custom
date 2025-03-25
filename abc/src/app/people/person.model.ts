@@ -7,6 +7,6 @@ export class Person {
     public phone: string,
     public email: string,
     public notes: string,
-    public household: Person[] | null
+    public household: { id: string }[] | null
   ) {}
 }

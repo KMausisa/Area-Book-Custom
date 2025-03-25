@@ -19,4 +19,26 @@ export class PersonService implements OnInit {
   getPeople(): Person[] {
     return this.people.slice();
   }
+
+  getPerson(id: string): Person | null {
+    const person = this.people.find((person) => person.id === id);
+    return person || null;
+  }
+
+  getHouseholdInfo(person: Person): Person[] | null {
+    if (!person.household) {
+      return null; // Return null immediately if no household
+    }
+
+    const householdInfo: Person[] = [];
+
+    person.household.forEach((personItem) => {
+      const foundPerson = this.getPerson(personItem.id);
+      if (foundPerson) {
+        householdInfo.push(foundPerson);
+      }
+    });
+
+    return householdInfo.length > 0 ? householdInfo : null; // Return null if empty
+  }
 }
