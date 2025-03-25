@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { Person } from '../person.model';
+import { PersonService } from '../person.service';
 
 @Component({
   selector: 'app-people-list',
@@ -6,4 +10,18 @@ import { Component } from '@angular/core';
   templateUrl: './people-list.component.html',
   styleUrl: './people-list.component.css',
 })
-export class PeopleListComponent {}
+export class PeopleListComponent implements OnInit {
+  people: Person[] = [];
+  subscription!: Subscription;
+
+  constructor(private personService: PersonService) {}
+
+  ngOnInit() {
+    this.people = this.personService.getPeople();
+    this.subscription = this.personService.personListChangedEvent.subscribe(
+      (people: Person[]) => {
+        this.people = people;
+      }
+    );
+  }
+}
