@@ -41,4 +41,10 @@ export class PersonService implements OnInit {
 
     return householdInfo.length > 0 ? householdInfo : null; // Return null if empty
   }
+
+  addPerson(person: Person) {}
+
+  updatePerson(originalPerson: Person, newPerson: Person) {}
+
+  deletePerson(person: Person) {}
 }

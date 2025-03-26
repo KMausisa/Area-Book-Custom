@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 
 import { Person } from '../person.model';
 import { PersonService } from '../person.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-people-edit',
@@ -15,7 +16,8 @@ export class PeopleEditComponent implements OnInit {
   @ViewChild('f', { static: false }) slForm!: NgForm;
   originalPerson!: Person;
   person!: Person;
-  People: Person[] = [];
+  people: Person[] = [];
+  subscription!: Subscription;
   editMode: boolean = false;
 
   constructor(
@@ -24,9 +26,34 @@ export class PeopleEditComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.people = this.personService.getPeople();
+    this.subscription = this.personService.personListChangedEvent.subscribe(
+      (people: Person[]) => {
+        this.people = people;
+      }
+    );
+    console.log(this.people);
+  }
 
-  onSubmit(form: NgForm) {}
+  onSubmit(form: NgForm) {
+    let value = form.value;
+    let newPerson = new Person(
+      value.id,
+      value.name,
+      value.age,
+      value.address,
+      value.phone,
+      value.email,
+      value.notes,
+      value.household
+    );
+    // If a person component is being edited, update the person
+    if (this.editMode == true) {
+    } else {
+      this.personService.addPerson(newPerson);
+    }
+  }
 
   onCancel() {}
 }
