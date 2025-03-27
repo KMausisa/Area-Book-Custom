@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class PeopleEditComponent implements OnInit {
   @ViewChild('f', { static: false }) slForm!: NgForm;
-  originalPerson!: Person;
+  originalPerson!: Person | null;
   person!: Person;
   people: Person[] = [];
   subscription!: Subscription;
@@ -36,6 +36,19 @@ export class PeopleEditComponent implements OnInit {
         this.people = people;
       }
     );
+    this.route.params.subscribe((params: Params) => {
+      let id = params['id'];
+      if (!id) {
+        this.editMode = false;
+        return;
+      }
+      this.originalPerson = this.personService.getPerson(id);
+      if (!this.originalPerson) {
+        return;
+      }
+      this.editMode = true;
+      this.person = JSON.parse(JSON.stringify(this.originalPerson));
+    });
   }
 
   onSubmit(form: NgForm) {
@@ -52,6 +65,11 @@ export class PeopleEditComponent implements OnInit {
     );
     // If a person component is being edited, update the person
     if (this.editMode == true) {
+      if (!this.originalPerson || !newPerson) {
+        return;
+      }
+      this.personService.updatePerson(this.originalPerson, newPerson);
+      this.onCancel();
     } else {
       this.personService.addPerson(newPerson);
       this.onCancel();

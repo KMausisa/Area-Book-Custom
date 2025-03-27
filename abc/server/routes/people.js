@@ -58,4 +58,36 @@ router.post("/", async (req, res, next) => {
     });
 });
 
+router.put("/:id", (req, res, next) => {
+  Person.findOne({ id: req.params.id })
+    .then((person) => {
+      person.name = req.body.name;
+      person.age = req.body.age;
+      person.address = req.body.address;
+      person.phone = req.body.phone;
+      person.email = req.body.email;
+      person.notes = req.body.notes;
+      person.household = req.body.household;
+
+      Person.updateOne({ id: req.params.id }, person)
+        .then((result) => {
+          res.status(204).json({
+            message: "Person updated successfully",
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "An error occurred",
+            error: error,
+          });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Document not found.",
+        error: { document: "Document not found" },
+      });
+    });
+});
+
 module.exports = router;

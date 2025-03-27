@@ -86,7 +86,26 @@ export class PersonService {
       });
   }
 
-  updatePerson(originalPerson: Person, newPerson: Person) {}
+  updatePerson(originalPerson: Person, newPerson: Person) {
+    const pos = this.people.findIndex((p) => p.id === originalPerson.id);
+
+    if (pos < 0) {
+      return;
+    }
+
+    newPerson.id = originalPerson.id;
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .put('http://localhost:3000/people/' + originalPerson.id, newPerson, {
+        headers: headers,
+      })
+      .subscribe(() => {
+        this.people[pos] = newPerson;
+        this.personListChangedEvent.next(this.people.slice());
+      });
+  }
 
   deletePerson(person: Person) {}
 }
