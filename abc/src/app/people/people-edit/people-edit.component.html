@@ -118,7 +118,11 @@
         <div class="form-group">
           <div class="col-sm-12 form-group">
             <label for="groupList">Household: </label>
-            <select name="people" id="household" [ngModel]="person?.household">
+            <select
+              name="household"
+              id="household"
+              [ngModel]="person?.household"
+            >
               <option [value]="person?.id" *ngFor="let person of people">
                 {{ person?.name }}
               </option>

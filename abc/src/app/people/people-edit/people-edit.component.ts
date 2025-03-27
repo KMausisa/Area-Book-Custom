@@ -27,13 +27,15 @@ export class PeopleEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.people = this.personService.getPeople();
+    this.personService.fetchPeople();
+    this.personService.personChangedEvent.subscribe((arr: Person[]) => {
+      this.people = arr;
+    });
     this.subscription = this.personService.personListChangedEvent.subscribe(
       (people: Person[]) => {
         this.people = people;
       }
     );
-    console.log(this.people);
   }
 
   onSubmit(form: NgForm) {
@@ -41,19 +43,23 @@ export class PeopleEditComponent implements OnInit {
     let newPerson = new Person(
       value.id,
       value.name,
-      value.age,
+      value.age || 0,
       value.address,
       value.phone,
-      value.email,
-      value.notes,
-      value.household
+      value.email || '',
+      value.notes || '',
+      value.household || null
     );
     // If a person component is being edited, update the person
     if (this.editMode == true) {
     } else {
       this.personService.addPerson(newPerson);
+      this.onCancel();
     }
   }
 
-  onCancel() {}
+  onCancel() {
+    this.slForm.reset();
+    this.router.navigate(['/people']);
+  }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -14,6 +15,7 @@ import { PeopleEditComponent } from './people/people-edit/people-edit.component'
 import { PeopleItemComponent } from './people/people-list/people-item/people-item.component';
 import { PeopleListComponent } from './people/people-list/people-list.component';
 import { PeopleFilterPipe } from './people/people-filter.pipe';
+import { PersonService } from './people/person.service';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,8 @@ import { PeopleFilterPipe } from './people/people-filter.pipe';
     PeopleListComponent,
     PeopleFilterPipe,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  providers: [PersonService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
