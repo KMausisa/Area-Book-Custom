@@ -49,21 +49,26 @@ export class PersonService {
     return person || null;
   }
 
-  getHouseholdInfo(person: Person): Person[] | null {
-    if (!person.household) {
-      return null; // Return null immediately if no household
+  getHouseholdInfo(person: Person): Person[] {
+    // If household is not defined or empty, return an empty array
+    if (!person.household || person.household.length === 0) {
+      return [];
     }
 
     const householdInfo: Person[] = [];
 
+    // Loop through each item in the household list
     person.household.forEach((personItem) => {
       const foundPerson = this.getPerson(personItem.id);
+
+      // Only add the person if foundPerson is valid (not null or undefined)
       if (foundPerson) {
         householdInfo.push(foundPerson);
       }
     });
 
-    return householdInfo.length > 0 ? householdInfo : null; // Return null if empty
+    // Return the household info if there are valid people; otherwise, return an empty array
+    return householdInfo.length > 0 ? householdInfo : [];
   }
 
   addPerson(newPerson: Person) {

@@ -11,7 +11,7 @@ import { PersonService } from '../person.service';
   styleUrl: './people-detail.component.css',
 })
 export class PeopleDetailComponent implements OnInit {
-  householdInfo!: Person[] | null;
+  householdInfo!: Person[];
   person!: Person | null;
   id!: string;
 

@@ -53,6 +53,7 @@ export class PeopleEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     let value = form.value;
+    console.log(value.household);
     let newPerson = new Person(
       value.id,
       value.name,
@@ -61,7 +62,7 @@ export class PeopleEditComponent implements OnInit {
       value.phone,
       value.email || '',
       value.notes || '',
-      value.household || null
+      value.household || []
     );
     // If a person component is being edited, update the person
     if (this.editMode == true) {

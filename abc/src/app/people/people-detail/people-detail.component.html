@@ -15,12 +15,16 @@
   </div>
 </div>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h2 class="list-group-item-heading">Household</h2>
-  </div>
-  <div class="panel-body">
-    <strong>Name(s): </strong>
-    <span *ngFor="let personEl of householdInfo"> {{ personEl?.name }}, </span>
+<div *ngIf="householdInfo && householdInfo.length > 0">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="list-group-item-heading">Household</h2>
+    </div>
+    <div class="panel-body">
+      <strong>Name(s): </strong>
+      <span *ngFor="let personEl of householdInfo; let i = index">
+        {{ personEl?.name }}<span *ngIf="i < householdInfo.length - 1">, </span>
+      </span>
+    </div>
   </div>
 </div>
