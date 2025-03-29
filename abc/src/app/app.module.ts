@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -16,6 +17,7 @@ import { PeopleItemComponent } from './people/people-list/people-item/people-ite
 import { PeopleListComponent } from './people/people-list/people-list.component';
 import { PeopleFilterPipe } from './people/people-filter.pipe';
 import { PersonService } from './people/person.service';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +30,15 @@ import { PersonService } from './people/person.service';
     PeopleItemComponent,
     PeopleListComponent,
     PeopleFilterPipe,
+    CalendarComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    CommonModule,
+  ],
   providers: [PersonService],
   bootstrap: [AppComponent],
 })
