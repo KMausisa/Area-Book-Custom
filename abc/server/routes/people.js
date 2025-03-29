@@ -90,4 +90,37 @@ router.put("/:id", (req, res, next) => {
     });
 });
 
+router.delete("/:id", (req, res, next) => {
+  // Ensure the ID is treated as a string
+  const personId = req.params.id.toString();
+
+  Person.findOne({ id: personId })
+    .then((person) => {
+      if (!person) {
+        return res.status(404).json({
+          message: "Person not found",
+        });
+      }
+
+      Person.deleteOne({ id: personId })
+        .then((result) => {
+          res.status(204).json({
+            message: "Person deleted successfully",
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "An error occurred",
+            error: error,
+          });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Error finding person.",
+        error: error,
+      });
+    });
+});
+
 module.exports = router;

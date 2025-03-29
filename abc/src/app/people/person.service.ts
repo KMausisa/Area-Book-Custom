@@ -112,5 +112,19 @@ export class PersonService {
       });
   }
 
-  deletePerson(person: Person) {}
+  deletePerson(person: Person) {
+    const pos = this.people.findIndex((p) => p.id === person.id);
+
+    if (pos < 0) {
+      return;
+    }
+
+    // delete from database
+    this.http
+      .delete('http://localhost:3000/people/' + person.id)
+      .subscribe(() => {
+        this.people.splice(pos, 1);
+        this.personListChangedEvent.next(this.people.slice());
+      });
+  }
 }

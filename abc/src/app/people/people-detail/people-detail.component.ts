@@ -31,5 +31,10 @@ export class PeopleDetailComponent implements OnInit {
     });
   }
 
-  onDelete() {}
+  onDelete() {
+    if (this.person) {
+      this.personService.deletePerson(this.person);
+    }
+    this.router.navigateByUrl('/people');
+  }
 }
