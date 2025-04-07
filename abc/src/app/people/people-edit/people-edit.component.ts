@@ -61,7 +61,7 @@ export class PeopleEditComponent implements OnInit {
       value.phone,
       value.email || '',
       value.notes || '',
-      value.household || []
+      []
     );
     // If a person component is being edited, update the person
     if (this.editMode == true) {

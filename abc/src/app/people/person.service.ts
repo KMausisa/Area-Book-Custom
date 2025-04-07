@@ -3,19 +3,20 @@ import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Person } from './person.model';
-import { MOCKPEOPLE } from './MOCKPEOPLE';
-import { response } from 'express';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PersonService {
   people: Person[] = [];
+  maxPersonId: number;
   @Output() personSelectedEvent = new EventEmitter<Person>();
   @Output() personChangedEvent = new EventEmitter<Person[]>();
   personListChangedEvent = new Subject<Person[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.maxPersonId = this.getMaxId();
+  }
 
   ngOnInit(): void {}
 
@@ -25,8 +26,9 @@ export class PersonService {
 
   fetchPeople() {
     this.getPeople().subscribe(
-      (response: { message: String; data: Person[] }) => {
+      (response: { message: string; data: Person[] }) => {
         this.people = response?.data;
+        this.maxPersonId = this.getMaxId();
         this.people.sort((curr, next) => {
           if (curr.id < next.id) {
             return -1;
@@ -76,16 +78,18 @@ export class PersonService {
       return;
     }
 
-    newPerson.id = '';
-
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     this.http
-      .post<{ data: Person }>('http://localhost:3000/people', newPerson, {
-        headers: headers,
-      })
+      .post<{ message: string; person: Person }>(
+        'http://localhost:3000/people',
+        newPerson,
+        {
+          headers: headers,
+        }
+      )
       .subscribe((responseData) => {
-        const savedPerson = responseData.data;
+        const savedPerson = responseData.person;
         this.people.push(savedPerson);
         this.personListChangedEvent.next(this.people.slice());
       });
@@ -126,5 +130,16 @@ export class PersonService {
         this.people.splice(pos, 1);
         this.personListChangedEvent.next(this.people.slice());
       });
+  }
+
+  getMaxId(): number {
+    let maxId = 0;
+    this.people.forEach((person) => {
+      let currentId = +person.id;
+      if (currentId > maxId) {
+        maxId = currentId;
+      }
+    });
+    return maxId;
   }
 }
