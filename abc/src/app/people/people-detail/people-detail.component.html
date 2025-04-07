@@ -1,1 +1,30 @@
-<p>people-detail works!</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="list-group-item-heading">{{ person?.name }}</h2>
+    <span>
+      <a class="btn btn-primary" type="button" routerLink="edit">Edit</a>
+      <a class="btn btn-danger" type="button" (click)="onDelete()">Delete</a>
+    </span>
+  </div>
+  <div class="panel-body">
+    <p><strong>Phone Number: </strong>{{ person?.phone }}</p>
+    <p><strong>Email: </strong>{{ person?.email }}</p>
+    <p><strong>Address: </strong>{{ person?.address }}</p>
+    <p><strong>Age: </strong>{{ person?.age }}</p>
+    <p><strong>Notes: </strong>{{ person?.notes }}</p>
+  </div>
+</div>
+
+<div *ngIf="householdInfo && householdInfo.length > 0">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="list-group-item-heading">Household</h2>
+    </div>
+    <div class="panel-body">
+      <strong>Name(s): </strong>
+      <span *ngFor="let personEl of householdInfo; let i = index">
+        {{ personEl?.name }}<span *ngIf="i < householdInfo.length - 1">, </span>
+      </span>
+    </div>
+  </div>
+</div>

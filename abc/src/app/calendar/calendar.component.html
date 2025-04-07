@@ -1,1 +1,54 @@
-<p>calendar works!</p>
+<div class="calendar-container">
+  <div class="calendar">
+    <div class="calendar-header">
+      <button (click)="prevMonth()">Previous</button>
+      <span>{{ currentMonth | date : "MMMM yyyy" }}</span>
+      <button (click)="nextMonth()">Next</button>
+    </div>
+
+    <div class="calendar-grid">
+      <div class="day-name" *ngFor="let day of dayNames">
+        {{ day }}
+      </div>
+
+      <div
+        *ngFor="let day of calendarDays"
+        class="day"
+        (click)="showSchedule(day)"
+      >
+        <span>{{ day.date.getDate() }}</span>
+        <div *ngFor="let event of day.events" class="event">
+          {{ event.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display Schedule on the Side -->
+  <div *ngIf="selectedDay" class="schedule-container">
+    <h3>Schedule for {{ selectedDay.date | date : "fullDate" }}</h3>
+    <div *ngIf="selectedDay.events.length > 0">
+      <ul>
+        <li *ngFor="let event of selectedDay.events">
+          <strong>{{ event.title }}</strong
+          >: {{ event.description }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="selectedDay.events.length === 0">
+      <p>No events scheduled for this day.</p>
+    </div>
+  </div>
+
+  <!-- Event Creation Form (optional) -->
+  <div *ngIf="isEventFormVisible" class="event-form">
+    <h3>Create Event</h3>
+    <input [(ngModel)]="eventTitle" placeholder="Event Title" />
+    <textarea
+      [(ngModel)]="eventDescription"
+      placeholder="Event Description"
+    ></textarea>
+    <button (click)="saveEvent()">Save Event</button>
+    <button (click)="closeEventForm()">Cancel</button>
+  </div>
+</div>
