@@ -7,9 +7,15 @@ const Person = require("../models/person");
 router.get("/", (req, res, next) => {
   Person.find()
     .then((people) => {
-      return res
-        .status(200)
-        .json({ message: "People retrieved successfully", data: people });
+      const formattedPeople = people.map((person) => {
+        person.id = person.id.toString();
+        return person;
+      });
+
+      return res.status(200).json({
+        message: "People retrieved successfully",
+        data: formattedPeople,
+      });
     })
     .catch((err) => {
       return res.status(500).json({

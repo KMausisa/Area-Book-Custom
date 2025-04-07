@@ -4,6 +4,7 @@
   (click)="onSelected()"
   [routerLink]="[person.id]"
   routerLinkActive="active"
+  *ngIf="person"
 >
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ person.name }}</h4>
